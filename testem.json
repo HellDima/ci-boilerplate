@@ -8,7 +8,6 @@
     ],
     "src_files": [
         "node_modules/chai/chai.js",
-        "src/add-class.js",
-        "test/add-class.test.js"
+        "dist/test.bundle.js"
     ]
 }

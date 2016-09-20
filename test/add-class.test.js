@@ -1,10 +1,10 @@
-
-var assert = chai.assert;
+import addClass from '../src/add-class.js';
+const assert = chai.assert;
 
 describe('addClass', function () {
 
     it('should add class to element', function () {
-        var element = { className: '' };
+        const element = { className: '' };
 
         addClass(element, 'test-class');
 
