@@ -7,6 +7,8 @@
         "chrome"
     ],
     "src_files": [
-        "dist/test.bundle.js"
+        "node_modules/chai/chai.js",
+        "http://localhost:35740/livereload.js",
+        "http://localhost:8899/dist/test.bundle.js"
     ]
 }

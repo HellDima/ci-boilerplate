@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const LiveReloadPlugin = require('webpack-livereload-plugin');
 const path = require("path");
 
 module.exports = {
@@ -8,12 +9,10 @@ module.exports = {
     },
     output: {
         path: path.join(__dirname, "dist"),
+		publicPath: "/dist",
         filename: "[name].bundle.js"
     },
     module: {
-		noParse: [
-			/node_modules\/sinon/
-		],
 		preLoaders: [
 			{
 				test: /\.js?$/,
@@ -33,7 +32,11 @@ module.exports = {
 		]
 	},
     plugins: [
-        new webpack.optimize.DedupePlugin()
+        new webpack.optimize.DedupePlugin(),
+		new LiveReloadPlugin({ port: 35740 })
     ],
-    devtool: 'source-map'
+    devtool: 'source-map',
+	devServer: {
+		port: 8899
+	}
 }
