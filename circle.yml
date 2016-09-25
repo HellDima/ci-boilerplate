@@ -1,0 +1,15 @@
+machine:
+    node:
+        version: 4.2.2
+
+dependencies:
+    pre:
+        - npm install testem -g
+    override:
+        - npm prune
+        - npm install
+        - npm update
+
+test:
+    override:
+        - npm run test-bs

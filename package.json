@@ -6,6 +6,7 @@
   "scripts": {
     "test-bs": "webpack -p && testem ci -f testem-browserstack.json",
     "test-local": "testem -f testem-local.json",
+    "test-remote": "webpack -p && temstem ci -f testem-remote.json",
     "build": "webpack -p",
     "build-dev": "webpack",
     "watch": "webpack-dev-server"
