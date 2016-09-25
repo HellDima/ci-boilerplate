@@ -1,0 +1,73 @@
+{
+  "framework": "mocha",
+  "parallel": 5,
+  "on_start": {
+    "command": "kill -9 $(ps -A | grep BrowserStackLocal | grep -v grep | cut -d ' ' -f2); node ./test/browserstack/start-BrowserStackLocal.js &",
+    "wait_for_text": "Tunnel started",
+    "wait_for_text_timeout": 300000
+  },
+  "on_exit": "node ./test/browserstack/stop-BrowserStackLocal.js `cat browserStackLocal.pid`; rm browserStackLocal.pid",
+
+  "src_files": [
+    "node_modules/chai/chai.js",
+    "dist/test.bundle.js"
+  ],
+
+  "launchers": {
+    "bs_opera": {
+      "exe": "./test/browserstack/run_on_browserstack.js",
+      "args": [ "Windows", "10", "opera", "latest", "" ],
+      "protocol": "browser"
+    },
+
+    "bs_firefox": {
+      "exe": "./test/browserstack/run_on_browserstack.js",
+      "args": [ "Windows", "10", "firefox", "46.0", "" ],
+      "protocol": "browser"
+    },
+
+    "bs_chrome_latest_osx": {
+      "exe": "./test/browserstack/run_on_browserstack.js",
+      "args": [ "OS X", "El Capitan", "chrome", "latest", "" ],
+      "protocol": "browser"
+    },
+
+    "bs_chrome_latest_win": {
+      "exe": "./test/browserstack/run_on_browserstack.js",
+      "args": [ "Windows", "10", "chrome", "latest", "" ],
+      "protocol": "browser"
+    },
+
+    "bs_chrome_50_win": {
+      "exe": "./test/browserstack/run_on_browserstack.js",
+      "args": [ "Windows", "10", "chrome", "50.0", "" ],
+      "protocol": "browser"
+    },
+
+    "bs_safari_9": {
+      "exe": "./test/browserstack/run_on_browserstack.js",
+      "args": [ "OS X", "El Capitan", "safari", "9.0", "" ],
+      "protocol": "browser"
+    },
+
+    "bs_ie_11": {
+      "exe": "./test/browserstack/run_on_browserstack.js",
+      "args": [ "Windows", "10", "ie", "11.0", "" ],
+      "protocol": "browser"
+    },
+
+    "bs_edge_13": {
+      "exe": "./test/browserstack/run_on_browserstack.js",
+      "args": [ "Windows", "10", "edge", "13.0", "" ],
+      "protocol": "browser"
+    }
+  },
+
+  "launch_in_dev": [],
+
+  "launch_in_ci": [
+    "bs_chrome_latest_win",
+    "bs_ie_11",
+    "bs_edge_13"
+  ]
+}
