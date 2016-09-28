@@ -13,3 +13,9 @@ dependencies:
 test:
     override:
         - npm run test-bs
+
+deployment:
+    staging:
+        branch: /.*/
+        commands:
+            - npm run deploy

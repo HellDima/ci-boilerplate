@@ -9,7 +9,8 @@
     "test-remote": "webpack -p && temstem ci -f testem-remote.json",
     "build": "webpack -p",
     "build-dev": "webpack",
-    "watch": "webpack-dev-server"
+    "watch": "webpack-dev-server",
+    "deploy": "node deploy/s3-deploy.js"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +25,7 @@
     "eslint-config-streamrail": "0.0.12",
     "eslint-loader": "^1.5.0",
     "mocha": "^3.0.2",
+    "s3": "^4.4.0",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.16.1",
     "webpack-livereload-plugin": "^0.8.2"
