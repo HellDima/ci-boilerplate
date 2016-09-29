@@ -26,3 +26,6 @@
 - slack
 - improve s3 (use circle build number, upload source maps)
 - production script
+
+---
+`Use git rebase --hard step-i` (i = 1-5) to jump between implementation steps
