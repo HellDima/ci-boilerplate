@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test-bs": "webpack -p && testem ci -f testem-browserstack.json",
+    "test-bs": "webpack -p && testem ci -f testem-browserstack.json --port 9359",
     "test-local": "testem -f testem-local.json",
     "test-remote": "webpack -p && temstem ci -f testem-remote.json",
     "build": "webpack -p",
