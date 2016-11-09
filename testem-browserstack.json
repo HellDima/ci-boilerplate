@@ -33,9 +33,7 @@
     },
 
     "bs_chrome_latest_win": {
-      "exe": "./test/browserstack/run_on_browserstack.js",
-      "args": [ "Windows", "10", "chrome", "latest", "" ],
-      "protocol": "browser"
+      "exe": "./test.js"
     },
 
     "bs_chrome_50_win": {
@@ -66,8 +64,6 @@
   "launch_in_dev": [],
 
   "launch_in_ci": [
-    "bs_chrome_latest_win",
-    "bs_ie_11",
-    "bs_edge_13"
+    "bs_chrome_latest_win"
   ]
 }
