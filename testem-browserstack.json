@@ -33,7 +33,7 @@
     },
 
     "bs_chrome_latest_win": {
-      "exe": "./test.js"
+      "exe": "./run.js"
     },
 
     "bs_chrome_50_win": {
