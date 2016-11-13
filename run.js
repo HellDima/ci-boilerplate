@@ -48,7 +48,7 @@ function openIp(){
                 console.log("adb connect")
                 exec("adb connect rproxy-il.ironsrc.com:7433", puts);
                 // exec("adb connect stf.ironsrc.com:7433", puts);
-            }, 20000)
+            }, 25000)
             // exec("adb connect rproxy-il.ironsrc.com:7485", puts);
             // exec("adb connect stf.ironsrc.com:7433", puts);
 
@@ -62,13 +62,13 @@ function openIp(){
                 console.log("adb shell")
                 // exec("adb devices", puts);
                 exec("adb shell am start -a android.intent.action.VIEW -d http://"+ip+":10000/", puts);
-            }, 35000)
+            }, 45000)
             // return(body);
 
             setTimeout(function () {
                 console.log("adb key")
                 exec("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c", putsAdbRemove);
-            }, 55000)
+            }, 65000)
         });
     });
 
