@@ -5,6 +5,8 @@ machine:
 dependencies:
     pre:
         - npm install testem -g
+        - npm install external-ip
+        - npm install request
     override:
         - npm prune
         - npm install
