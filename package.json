@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test-bs": "webpack -p && testem ci -f testem-browserstack.json --port 9359",
-    "test-mobile": "",
+    "test-bs": "webpack -p && testem -f testem-mobile.json --port 10000",
+    "test-mobile": "webpack -p && testem -f testem-mobile.json --port 10000",
     "test-local": "testem -f testem-local.json",
     "test-remote": "webpack -p && temstem ci -f testem-remote.json",
     "build": "webpack -p",
@@ -32,6 +32,7 @@
     "webpack-livereload-plugin": "^0.8.2"
   },
   "dependencies": {
+    "request": "^2.78.0",
     "testem": "^1.13.0"
   }
 }
