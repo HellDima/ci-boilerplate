@@ -10,7 +10,7 @@ var request = require("request");
 // GET request
 
 function openIp(){
-
+    // exec("npm install request", puts);
     // exec("npm install external-ip", puts);
     'use strict';
 
@@ -36,10 +36,6 @@ function openIp(){
             // console.log(body);
 
             // exec("ping -c 3 rproxy-il.ironsrc.com", puts);
-            setTimeout(function () {
-                console.log("adb key")
-                exec("webpack -p && testem -f testem-mobile.json --port 10000 --host "+ip, puts);
-            }, 2000)
 
 
             setTimeout(function () {
@@ -52,7 +48,7 @@ function openIp(){
                 console.log("adb connect")
                 exec("adb connect rproxy-il.ironsrc.com:7433", puts);
                 // exec("adb connect stf.ironsrc.com:7433", puts);
-            }, 15000)
+            }, 10000)
             // exec("adb connect rproxy-il.ironsrc.com:7485", puts);
             // exec("adb connect stf.ironsrc.com:7433", puts);
 
