@@ -41,14 +41,14 @@ function openIp(){
             setTimeout(function () {
                 console.log("adb key")
                 exec("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c", putsAdb);
-            }, 2000)
+            }, 5000)
 
 
             setTimeout(function () {
                 console.log("adb connect")
                 exec("adb connect rproxy-il.ironsrc.com:7433", puts);
                 // exec("adb connect stf.ironsrc.com:7433", puts);
-            }, 10000)
+            }, 20000)
             // exec("adb connect rproxy-il.ironsrc.com:7485", puts);
             // exec("adb connect stf.ironsrc.com:7433", puts);
 
@@ -62,7 +62,7 @@ function openIp(){
                 console.log("adb shell")
                 // exec("adb devices", puts);
                 exec("adb shell am start -a android.intent.action.VIEW -d http://"+ip+":10000/", puts);
-            }, 25000)
+            }, 35000)
             // return(body);
         });
     });
