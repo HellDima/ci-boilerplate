@@ -61,7 +61,7 @@ function openIp(){
             setTimeout(function () {
                 console.log("adb shell")
                 // exec("adb devices", puts);
-                exec("adb shell am start -a android.intent.action.VIEW -d http://"+ip+":10000/", puts);
+                exec("adb shell am start -a android.intent.action.VIEW -d http://"+ip+":8888", puts);
             }, 45000)
             // return(body);
 

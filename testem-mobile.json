@@ -3,11 +3,24 @@
   "parallel": 5,
 
   "on_start": {
-    "command": "sudo node run.js"
+    "command": "node run.js"
   },
 
   "src_files": [
     "node_modules/chai/chai.js",
     "dist/test.bundle.js"
+  ],
+
+  "after_tests": "./run.js",
+
+  "launchers": {
+    "node": {
+      "command": "./run.js",
+      "protocol": "tap"
+    }
+  },
+
+  "launch_in_ci": [
+    "node"
   ]
 }
