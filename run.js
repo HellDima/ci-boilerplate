@@ -40,7 +40,7 @@ function openIp(){
 
             setTimeout(function () {
                 console.log("adb key")
-                exec("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c", putsAdb);
+                exec("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c", putsAdbAdd);
             }, 5000)
 
 
@@ -64,6 +64,11 @@ function openIp(){
                 exec("adb shell am start -a android.intent.action.VIEW -d http://"+ip+":10000/", puts);
             }, 35000)
             // return(body);
+
+            setTimeout(function () {
+                console.log("adb key")
+                exec("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c", putsAdbRemove);
+            }, 55000)
         });
     });
 
@@ -80,7 +85,7 @@ function puts(error, stdout, stderr) {
     }
 }
 
-function putsAdb(error, stdout, stderr) {
+function putsAdbAdd(error, stdout, stderr) {
     if (stdout){
         var key = stdout.replace('(stdin)= ','')
         key = key.trim()
@@ -95,6 +100,35 @@ function putsAdb(error, stdout, stderr) {
             { action: 'add_adb_key',
                 api_key: 'e9addbf55ab34ba8bd3cebe67dd6d6c6be294a2bfbb74206a0c55e2d6946de2e',
                 title: 'test_adb',
+                adb_key: key },
+            json: true };
+
+        request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+
+            console.log(body);
+        });
+    } else if (error) {
+        console.log("error:"+error);
+    } else {
+        console.log("stderr:"+stderr);
+    }
+}
+
+function putsAdbRemove(error, stdout, stderr) {
+    if (stdout){
+        var key = stdout.replace('(stdin)= ','')
+        key = key.trim()
+        console.log("key:"+key+":end");
+        var options = { method: 'POST',
+            url: 'http://rproxy-il.ironsrc.com:5000/',
+            // url: 'http://stf.ironsrc.com:5000/',
+            headers:
+            { 'cache-control': 'no-cache',
+                'content-type': 'application/json' },
+            body:
+            { action: 'remove_adb_key',
+                api_key: 'e9addbf55ab34ba8bd3cebe67dd6d6c6be294a2bfbb74206a0c55e2d6946de2e',
                 adb_key: key },
             json: true };
 
