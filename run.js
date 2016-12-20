@@ -60,8 +60,22 @@ function openIp(){
 
             setTimeout(function () {
                 console.log("adb shell")
+                var options = { method: 'GET',
+                    url: 'http://127.0.0.1:4040/api/tunnels',
+                    headers:
+                    {'cache-control': 'no-cache' } };
+                request(options, function (error, response, body) {
+                    if (error) throw new Error(error);
+                console.log(body)
+                var jsonObject = JSON.parse(body);
+                console.log("test")
+                var arrayFound = jsonObject.items.filter(function(item) {
+                    return item['proto'] == 'http';
+                });
+                console.log(arrayFound)
                 // exec("adb devices", puts);
-                exec("adb shell am start -a android.intent.action.VIEW -d http://"+ip+":8888", puts);
+                    exec("adb shell am start -a android.intent.action.VIEW -d http://"+ip+":8888", puts);
+                });
             }, 65000)
             // return(body);
 
