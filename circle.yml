@@ -7,6 +7,8 @@ dependencies:
         - npm install testem -g
         - npm install external-ip -g
         - npm install request -g
+        - unzip ngrok.zip
+        - ./ngrok http 8888
     override:
         - npm prune
         - npm install
