@@ -2,10 +2,6 @@
   "framework": "mocha",
   "parallel": 1,
 
-  "on_start": {
-    "command": "node run.js"
-  },
-
   "src_files": [
     "node_modules/chai/chai.js",
     "dist/test.bundle.js"
