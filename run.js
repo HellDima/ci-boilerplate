@@ -84,13 +84,14 @@ function openIp(){
             }, 65000)
             // return(body);
 
-            // setTimeout(function () {
-            //     console.log("adb key")
-            //     exec("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c", putsAdbRemove);
-            // }, 75000)
+            setTimeout(function () {
+                console.log("adb key")
+                exec("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c", putsAdbRemove);
+            }, 75000)
+
             setTimeout(function () {
                 console.log("exit")
-                exit()
+                exit(0)
                 // exec("adb devices", puts);
                 // exec("adb shell am start -a android.intent.action.VIEW -d http://www.walla.co.il", puts);
             }, 90000)
