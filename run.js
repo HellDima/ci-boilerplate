@@ -46,7 +46,7 @@ function openIp(){
 
             setTimeout(function () {
                 console.log("adb connect")
-                exec("adb connect rproxy-il.ironsrc.com:7433", puts);
+                exec("adb connect rproxy-il.ironsrc.com:7409", puts);
                 // exec("adb connect stf.ironsrc.com:7433", puts);
             }, 50000)
             // exec("adb connect rproxy-il.ironsrc.com:7485", puts);
@@ -66,15 +66,15 @@ function openIp(){
                     {'cache-control': 'no-cache' } };
                 request(options, function (error, response, body) {
                     if (error) throw new Error(error);
-                console.log(body)
-                var jsonObject = JSON.parse(body);
-                console.log("test")
-                var arrayFound = jsonObject.items.filter(function(item) {
-                    return item['proto'] == 'http';
-                });
-                console.log(arrayFound)
-                // exec("adb devices", puts);
-                    exec("adb shell am start -a android.intent.action.VIEW -d http://"+ip+":8888", puts);
+                    console.log(body)
+                    var jsonObject = JSON.parse(body);
+                    console.log("test")
+                    var arrayFound = jsonObject.items.filter(function(item) {
+                        return item['proto'] == 'http';
+                    });
+                    console.log(arrayFound)
+                    var new_ip = arrayFound['public_url']
+                    exec("adb shell am start -a android.intent.action.VIEW -d "+new_ip, puts);
                 });
             }, 65000)
             // return(body);
