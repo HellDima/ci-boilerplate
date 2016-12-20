@@ -51,15 +51,15 @@ function openIp(){
                 console.log("adb connect")
                 exec("adb connect rproxy-il.ironsrc.com:7409", puts);
                 // exec("adb connect stf.ironsrc.com:7433", puts);
-            }, 50000)
+            }, 40000)
             // exec("adb connect rproxy-il.ironsrc.com:7485", puts);
             // exec("adb connect stf.ironsrc.com:7433", puts);
 
-            // setTimeout(function () {
-            //     console.log("adb devices")
-            //     exec("adb devices", puts);
-            //     // exec("adb shell am start -a android.intent.action.VIEW -d http://www.walla.co.il", puts);
-            // }, 20000)
+            setTimeout(function () {
+                console.log("adb devices")
+                exec("adb devices", puts);
+                // exec("adb shell am start -a android.intent.action.VIEW -d http://www.walla.co.il", puts);
+            }, 60000)
 
             setTimeout(function () {
                 console.log("adb shell")
