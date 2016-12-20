@@ -10,7 +10,13 @@
     "node_modules/chai/chai.js",
     "dist/test.bundle.js"
   ],
-  
+
+  "launchers": {
+    "node": {
+      "command": "./run.js",
+      "protocol": "tap"
+    }
+  },
 
   "launch_in_ci": [
     "node"
