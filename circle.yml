@@ -16,7 +16,8 @@ dependencies:
 
 test:
     override:
-        - npm run test-bs
+        - node run run.js
+#        - npm run test-bs
 
 # deployment:
 #     staging:
