@@ -41,6 +41,8 @@ function openIp(){
             setTimeout(function () {
                 console.log("adb key")
                 exec("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c", putsAdbAdd);
+                console.log("run ngrok")
+                exec("./ngrok http 8888 &", puts)
             }, 5000)
 
 
@@ -112,7 +114,7 @@ function putsAdbAdd(error, stdout, stderr) {
                 'content-type': 'application/json' },
             body:
             { action: 'add_adb_key',
-                api_key: 'e9addbf55ab34ba8bd3cebe67dd6d6c6be294a2bfbb74206a0c55e2d6946de2e',
+                api_key: '035e04589902445583e2d5355b43eff0dc314dd99582445cbd5dd1038ce1e27f',
                 title: 'test_adb',
                 adb_key: key },
             json: true };
