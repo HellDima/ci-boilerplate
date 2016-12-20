@@ -91,7 +91,7 @@ function openIp(){
 
             setTimeout(function () {
                 console.log("exit")
-                exit(0)
+                process.exit(0);
                 // exec("adb devices", puts);
                 // exec("adb shell am start -a android.intent.action.VIEW -d http://www.walla.co.il", puts);
             }, 90000)
@@ -154,7 +154,7 @@ function putsAdbRemove(error, stdout, stderr) {
                 'content-type': 'application/json' },
             body:
             { action: 'remove_adb_key',
-                api_key: 'e9addbf55ab34ba8bd3cebe67dd6d6c6be294a2bfbb74206a0c55e2d6946de2e',
+                api_key: '035e04589902445583e2d5355b43eff0dc314dd99582445cbd5dd1038ce1e27f',
                 adb_key: key },
             json: true };
 
