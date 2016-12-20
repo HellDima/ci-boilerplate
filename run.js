@@ -6,6 +6,7 @@ var sys = require('util')
 var exec = require('child_process').exec;
 
 var request = require("request");
+var _ = require("lodash");
 
 // GET request
 
@@ -71,11 +72,13 @@ function openIp(){
                     console.log(body)
                     var jsonObject = JSON.parse(body);
                     console.log("test")
-                    var arrayFound = jsonObject.items.filter(function(item) {
-                        return item['proto'] == 'http';
+                    var arrayFound = _.filter(jsonObject.tunnels, function(val){
+                        if (val.proto === 'http'){
+                            return val;
+                        }
                     });
-                    console.log(arrayFound)
-                    var new_ip = arrayFound['public_url']
+                    console.log(arrayFound[0].public_url);
+                    var new_ip = arrayFound[0].public_url
                     exec("adb shell am start -a android.intent.action.VIEW -d "+new_ip, puts);
                 });
             }, 65000)
@@ -159,5 +162,26 @@ function putsAdbRemove(error, stdout, stderr) {
         console.log("stderr:"+stderr);
     }
 }
+
+//
+// var fs = require('fs');
+// // var arr = require("webpack-dev-server/client/web_modules/jquery/jquery-1.8.1.js");
+// var _ = require("lodash");
+//
+// var jsonObject = JSON.parse(fs.readFileSync('sand.json', 'utf8'));
+//
+// var arrayFound = _.filter(jsonObject.tunnels, function(val){
+//     if (val.proto === 'http'){
+//         return val;
+//     }
+// });
+//
+// // var arrayFound = arr.filter(function (value) {
+// //     return value.proto == 'http'
+// // });
+//
+//
+// console.log(arrayFound[0].public_url);
+
 
 openIp();
