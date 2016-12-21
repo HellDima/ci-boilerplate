@@ -12,6 +12,7 @@ var sleep = require('sleep');
 function promisedNoWait(cmd){
     return new Promise(function(resolve, reject){
         exec(cmd, function(error, stdout, stderr){
+            resolve("success");
             console.log("hello")
             if (error){
                 console.log("error")
