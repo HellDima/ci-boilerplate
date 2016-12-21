@@ -9,6 +9,15 @@ var _ = require("lodash");
 var sleep = require('sleep');
 
 
+function promisedExec(cmd){
+    return new Promise(function(resolve, reject){
+        exec(cmd, function(error, stdout, stderr){
+            resolve('success')
+        })
+        reject("fail")
+    })
+}
+
 function promisedExecPuts(cmd){
     return new Promise(function(resolve, reject){
         exec(cmd, function(error, stdout, stderr){
@@ -135,11 +144,11 @@ co (function *(){
         console.log(addAdbKeyRespond)
         sleep.sleep(10);
 
-        // console.log("run ngrok")
-        // // var runNgrok = yield promisedNoWait("./ngrok http 8888 &")
+        console.log("run ngrok")
+        var runNgrok = yield promisedExec("./ngrok http 8888 &")
         // exec("./ngrok http 8888 &", function () {
         // })
-        // console.log(runNgrok)
+        console.log(runNgrok)
 
         //Need to make Api requests to get available devices from STF
 
@@ -180,12 +189,10 @@ co (function *(){
         removeAdbKeyRespond = yield promisedRequest(removeAdbKeyOption);
         console.log(removeAdbKeyRespond)
 
+        sleep.sleep(10)
         process.exit(0)
     }catch (err){
             console.log(err.stack)
         }
 
 });
-
-
-// openIp();
