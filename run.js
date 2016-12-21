@@ -15,7 +15,7 @@ function promisedNoWait(cmd){
             if (error){
                 reject(error);
             } else {
-                resolve();
+                resolve("success");
             }
         })
     })
