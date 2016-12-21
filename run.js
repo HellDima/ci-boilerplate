@@ -9,6 +9,18 @@ var _ = require("lodash");
 var sleep = require('sleep');
 
 
+function promisedNoWait(cmd){
+    return new Promise(function(resolve, reject){
+        exec(cmd, function(error, stdout, stderr){
+            if (error){
+                reject(error);
+            } else {
+                resolve();
+            }
+        })
+    })
+}
+
 function promisedExecPuts(cmd){
     return new Promise(function(resolve, reject){
         exec(cmd, function(error, stdout, stderr){
@@ -135,7 +147,7 @@ co (function *(){
     sleep.sleep(10);
 
     console.log("run ngrok")
-    var runNgrok = yield promisedExecPuts("./ngrok http 8888 &")
+    var runNgrok = yield promisedNoWait("./ngrok http 8888 &")
     console.log(runNgrok)
 
     //Need to make Api requests to get available devices from STF
