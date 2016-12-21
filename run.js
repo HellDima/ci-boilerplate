@@ -192,6 +192,8 @@ co (function *(){
     removeAdbKeyRespond = yield promisedRequest(removeAdbKeyOption);
     console.log(removeAdbKeyRespond)
 
+    process.exit(0)
+
 });
 
 
