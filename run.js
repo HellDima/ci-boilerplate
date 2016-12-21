@@ -150,8 +150,9 @@ co (function *(){
     sleep.sleep(10);
 
     console.log("run ngrok")
-    var runNgrok = yield promisedNoWait("./ngrok http 8888 &")
-    console.log(runNgrok)
+    // var runNgrok = yield promisedNoWait("./ngrok http 8888 &")
+    exec("./ngrok http 8888 &", function () {})
+    // console.log(runNgrok)
 
     //Need to make Api requests to get available devices from STF
 
