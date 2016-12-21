@@ -12,10 +12,9 @@ var sleep = require('sleep');
 function promisedExec(cmd){
     return new Promise(function(resolve, reject){
         exec(cmd, function(error, stdout, stderr){
-            if (error) reject("fail")
-            resolve("success")
+            if (!error) resolve(cmd)
+            reject(error)
         })
-        reject("fail")
     })
 }
 
