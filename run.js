@@ -185,6 +185,13 @@ co (function *(){
     // var new_ip = "http://www.walla.co.il"
     var adbOpenBrowser = yield promisedExecPuts("adb shell am start -a android.intent.action.VIEW -d "+new_ip);
     console.log(adbOpenBrowser)
+
+    sleep.sleep(10);
+    console.log("Clear old adb key")
+    removeAdbKeyOption = yield promisedExecRemoveAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");
+    removeAdbKeyRespond = yield promisedRequest(removeAdbKeyOption);
+    console.log(removeAdbKeyRespond)
+
 });
 
 
