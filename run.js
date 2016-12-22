@@ -188,14 +188,14 @@ co (function *(){
         var adbOpenBrowser = yield promisedExecPuts("adb shell am start -a android.intent.action.VIEW -d " + new_ip);
         logStream.write(adbOpenBrowser+ '\r\n'.toString())
 
-        // sleep.sleep(5);
-        // logStream.write("Clear old adb key"+ '\r\n')
-        // removeAdbKeyOption = yield promisedExecRemoveAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");
-        // removeAdbKeyRespond = yield promisedRequest(removeAdbKeyOption);
-        // logStream.write(removeAdbKeyRespond+ '\r\n'.toString())
+        sleep.sleep(5);
+        logStream.write("Clear old adb key"+ '\r\n')
+        removeAdbKeyOption = yield promisedExecRemoveAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");
+        removeAdbKeyRespond = yield promisedRequest(removeAdbKeyOption);
+        logStream.write(removeAdbKeyRespond+ '\r\n'.toString())
 
         sleep.sleep(20)
-        process.exit(0)
+        // process.exit(0)
         logStream.end('this is the end line');
     }catch (err){
             logStream.write(err.stack+ '\r\n'.toString())
