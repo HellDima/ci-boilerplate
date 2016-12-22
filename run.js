@@ -6,6 +6,7 @@ var exec = require('child_process').exec;
 var request = require("request");
 var _ = require("lodash");
 var sleep = require('sleep');
+var co = require('co');
 
 var fs = require('fs');
 var logStream = fs.createWriteStream('log.txt', {'flags': 'a'});
@@ -118,8 +119,6 @@ function promisedExecRemoveAdb(cmd){
     })
 }
 
-var co = require('co');
-
 logStream.write("run ngrok"+ '\r\n')
 // var runNgrok = yield promisedExec("./ngrok http 8888 &")
 exec("./ngrok http 8888 &", function (error, stdout, stderr) {
@@ -195,11 +194,12 @@ co (function *(){
         logStream.write(removeAdbKeyRespond+ '\r\n'.toString())
 
         sleep.sleep(20)
-        // process.exit(0)
-        return 0
+        process.exit(0)
         logStream.end('this is the end line');
     }catch (err){
             logStream.write(err.stack+ '\r\n'.toString())
         }
 
+}).catch(function(err) {
+    logStream.write(err.stack);
 });

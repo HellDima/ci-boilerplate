@@ -9,7 +9,7 @@
 
   "launchers": {
     "node": {
-      "command": "./mobile.js",
+      "command": "./run.js",
       "protocol": "tap"
     }
   },
