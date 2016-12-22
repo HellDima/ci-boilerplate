@@ -39,6 +39,7 @@
     "request": "^2.79.0",
     "request-promise": "latest",
     "testem": "^1.13.0",
-    "sleep": "latest"
+    "sleep": "latest",
+    "bluebird": "latest"
   }
 }

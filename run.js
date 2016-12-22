@@ -7,6 +7,7 @@ var request = require("request");
 var _ = require("lodash");
 var sleep = require('sleep');
 var co = require('co');
+var Promise = require("bluebird");
 
 var fs = require('fs');
 var logStream = fs.createWriteStream('log.txt', {'flags': 'a'});
