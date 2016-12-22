@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-console.log("my test");
 
 var sys = require('util')
 var exec = require('child_process').exec;
@@ -7,6 +6,12 @@ var exec = require('child_process').exec;
 var request = require("request");
 var _ = require("lodash");
 var sleep = require('sleep');
+
+var fs = require('fs');
+var logStream = fs.createWriteStream('log.txt', {'flags': 'a'});
+// use {'flags': 'a'} to append and {'flags': 'w'} to erase and write a new file
+logStream.write('Initial line...');
+
 
 
 function promisedExec(cmd){
@@ -60,7 +65,7 @@ function promisedExecAddAdb(cmd){
                 var rand = Math.floor(Math.random() * 100) + 1
                 var title = 'adb_key'+rand
                 key = key.trim()
-                console.log("key:"+key+":end");
+                logStream.write("key:"+key+":end");
                 var options = { method: 'POST',
                     url: 'http://rproxy-il.ironsrc.com:5000/',
                     // url: 'http://stf.ironsrc.com:5000/',
@@ -90,7 +95,7 @@ function promisedExecRemoveAdb(cmd){
             if (stdout){
                 var key = stdout.replace('(stdin)= ','')
                 key = key.trim()
-                console.log("key:"+key+":end");
+                logStream.write("key:"+key+":end");
                 var options = { method: 'POST',
                     url: 'http://rproxy-il.ironsrc.com:5000/',
                     // url: 'http://stf.ironsrc.com:5000/',
@@ -115,16 +120,16 @@ function promisedExecRemoveAdb(cmd){
 
 var co = require('co');
 
-console.log("run ngrok")
+logStream.write("run ngrok")
 // var runNgrok = yield promisedExec("./ngrok http 8888 &")
 exec("./ngrok http 8888 &", function (error, stdout, stderr) {
 })
-// console.log(runNgrok)
+// logStream.write(runNgrok)
 
 co (function *(){
     try {
         var myIp = yield promisedGetIp();
-        console.log('myip: ' + myIp);
+        logStream.write('myip: ' + myIp);
 
         var url = "http://prtgapi.ironsrc.com/add_to_rproxy?username=circleci&password=ABFyeJQw6HzappNQ&ip=" + myIp;
         var options = {
@@ -136,40 +141,40 @@ co (function *(){
             }
         };
         var daniel = yield promisedRequest(options);
-        console.log(daniel);
+        logStream.write(daniel);
 
-        console.log("Clear old adb key")
+        logStream.write("Clear old adb key")
         var removeAdbKeyOption = yield promisedExecRemoveAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");
         var removeAdbKeyRespond = yield promisedRequest(removeAdbKeyOption);
-        console.log(removeAdbKeyRespond)
+        logStream.write(removeAdbKeyRespond)
         sleep.sleep(10);
 
-        console.log("adb key")
+        logStream.write("adb key")
         var addAdbKeyOption = yield promisedExecAddAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");
         var addAdbKeyRespond = yield promisedRequest(addAdbKeyOption);
-        console.log(addAdbKeyRespond)
+        logStream.write(addAdbKeyRespond)
         sleep.sleep(10);
 
         //Need to make Api requests to get available devices from STF
 
-        console.log("adb connect")
+        logStream.write("adb connect")
         var adbConnect = yield promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
         // var adbConnect = yield promisedExecPuts("adb connect stf.ironsrc.com:7409");
-        console.log(adbConnect)
+        logStream.write(adbConnect)
 
         sleep.sleep(10)
-        console.log("adb devices")
+        logStream.write("adb devices")
         var adbDevices = yield promisedExecPuts("adb devices");
-        console.log(adbDevices)
+        logStream.write(adbDevices)
 
-        console.log("adb shell")
+        logStream.write("adb shell")
         var shell_options = {
             method: 'GET',
             url: 'http://127.0.0.1:4040/api/tunnels',
             headers: {'cache-control': 'no-cache'}
         };
         var shellRespond = yield promisedRequest(shell_options);
-        console.log(shellRespond)
+        logStream.write(shellRespond)
 
         var jsonObject = JSON.parse(shellRespond);
         var arrayFound = _.filter(jsonObject.tunnels, function (val) {
@@ -177,22 +182,23 @@ co (function *(){
                 return val;
             }
         });
-        console.log(arrayFound[0].public_url);
+        logStream.write(arrayFound[0].public_url);
         var new_ip = arrayFound[0].public_url
         // var new_ip = "http://www.walla.co.il"
         var adbOpenBrowser = yield promisedExecPuts("adb shell am start -a android.intent.action.VIEW -d " + new_ip);
-        console.log(adbOpenBrowser)
+        logStream.write(adbOpenBrowser)
 
         sleep.sleep(5);
-        console.log("Clear old adb key")
+        logStream.write("Clear old adb key")
         removeAdbKeyOption = yield promisedExecRemoveAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");
         removeAdbKeyRespond = yield promisedRequest(removeAdbKeyOption);
-        console.log(removeAdbKeyRespond)
+        logStream.write(removeAdbKeyRespond)
 
         sleep.sleep(20)
         process.exit(0)
+        logStream.end('this is the end line');
     }catch (err){
-            console.log(err.stack)
+            logStream.write(err.stack)
         }
 
 });
