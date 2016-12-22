@@ -183,13 +183,13 @@ co (function *(){
         var adbOpenBrowser = yield promisedExecPuts("adb shell am start -a android.intent.action.VIEW -d " + new_ip);
         console.log(adbOpenBrowser)
 
-        sleep.sleep(10);
+        sleep.sleep(5);
         console.log("Clear old adb key")
         removeAdbKeyOption = yield promisedExecRemoveAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");
         removeAdbKeyRespond = yield promisedRequest(removeAdbKeyOption);
         console.log(removeAdbKeyRespond)
 
-        sleep.sleep(10)
+        sleep.sleep(20)
         process.exit(0)
     }catch (err){
             console.log(err.stack)
