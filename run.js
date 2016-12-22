@@ -115,6 +115,12 @@ function promisedExecRemoveAdb(cmd){
 
 var co = require('co');
 
+console.log("run ngrok")
+// var runNgrok = yield promisedExec("./ngrok http 8888 &")
+exec("./ngrok http 8888 &", function (error, stdout, stderr) {
+})
+console.log(runNgrok)
+
 co (function *(){
     try {
         var myIp = yield promisedGetIp();
@@ -143,12 +149,6 @@ co (function *(){
         var addAdbKeyRespond = yield promisedRequest(addAdbKeyOption);
         console.log(addAdbKeyRespond)
         sleep.sleep(10);
-
-        console.log("run ngrok")
-        var runNgrok = yield promisedExec("./ngrok http 8888 &")
-        // exec("./ngrok http 8888 &", function () {
-        // })
-        console.log(runNgrok)
 
         //Need to make Api requests to get available devices from STF
 
