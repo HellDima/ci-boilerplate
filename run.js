@@ -197,6 +197,9 @@ co (function *(){
         logStream.write(removeAdbKeyRespond+ '\r\n'.toString())
 
         sleep.sleep(20)
+        process.on('uncaughtException', function (err) {
+            logStream.write(err+ '\r\n'.toString());
+        });
         process.exit(0)
         logStream.end('this is the end line');
     }catch (err){
@@ -204,5 +207,6 @@ co (function *(){
         }
 
 }).catch(function(err) {
+    logStream.write("catch error");
     logStream.write(err.stack);
 });
