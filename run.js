@@ -196,6 +196,7 @@ co (function *(){
 
         sleep.sleep(20)
         // process.exit(0)
+        return 0
         logStream.end('this is the end line');
     }catch (err){
             logStream.write(err.stack+ '\r\n'.toString())
