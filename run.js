@@ -119,7 +119,7 @@ console.log("run ngrok")
 // var runNgrok = yield promisedExec("./ngrok http 8888 &")
 exec("./ngrok http 8888 &", function (error, stdout, stderr) {
 })
-console.log(runNgrok)
+// console.log(runNgrok)
 
 co (function *(){
     try {
