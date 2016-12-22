@@ -153,7 +153,7 @@ co (function *(){
         //Need to make Api requests to get available devices from STF
 
         console.log("adb connect")
-        var adbConnect = yield promisedExecPuts("adb connect rproxy-il.ironsrc.com:7409");
+        var adbConnect = yield promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
         // var adbConnect = yield promisedExecPuts("adb connect stf.ironsrc.com:7409");
         console.log(adbConnect)
 
