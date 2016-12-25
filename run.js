@@ -158,11 +158,11 @@ if (argv.f)
 logStream.write("Will run on "+ devices_required+" devices"+ '\r\n')
 logStream.write("Will run with filter: "+ filter+ '\r\n')
 
-// logStream.write("run ngrok"+ '\r\n')
-// // var runNgrok = yield promisedExec("./ngrok http 8888 &")
-// exec("./ngrok http 8888 &", function (error, stdout, stderr) {
-// })
-// logStream.write(runNgrok)
+logStream.write("run ngrok"+ '\r\n')
+// var runNgrok = yield promisedExec("./ngrok http 8888 &")
+exec("./ngrok http 8888 &", function (error, stdout, stderr) {
+})
+logStream.write(runNgrok)
 
 co (function *(){
     try {
@@ -203,9 +203,9 @@ co (function *(){
                 logStream.write("adb connect to: "+adb_url+ '\r\n')
                 // var adbConnect = promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
                 // var adbConnect = promisedExecPuts(adb_url);
-                promisesToExec.push(promisedExecPuts(adb_url));
-                logStream.write(adbConnect+ '\r\n'.toString())
-                // sleep.sleep(10);
+                promisesToExec.push(promisedExecPuts("adb connect "+adb_url));
+                logStream.write(adb_url+ '\r\n'.toString())
+                sleep.sleep(10);
             }
         });
 
