@@ -12,7 +12,7 @@ var co = require('co');
 var Promise = require("bluebird");
 
 var fs = require('fs');
-var logStream = fs.createWriteStream('log.txt', {'flags': 'w'});
+var logStream = fs.createWriteStream('log.txt', {'flags': 'a'});
 // use {'flags': 'a'} to append and {'flags': 'w'} to erase and write a new file
 logStream.write('Initial line...'+ '\r\n');
 
