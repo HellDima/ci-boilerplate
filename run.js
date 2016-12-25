@@ -196,7 +196,7 @@ co (function *(){
         //Need to make Api requests to get available devices from STF
         var owned_devices = yield promisedRequestTakeOwner(devices_required, filter)
         // console.log(devices)
-        owned_devices.forEach(function (item) {
+        owned_devices.forEach(yield function (item) {
             if (item['success']){
                 var adb_url = item['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
                 logStream.write("adb connect to: "+adb_url+ '\r\n')
