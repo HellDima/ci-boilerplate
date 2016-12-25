@@ -195,18 +195,22 @@ co (function *(){
 
         //Need to make Api requests to get available devices from STF
         var owned_devices = yield promisedRequestTakeOwner(devices_required, filter)
-        // console.log(devices)
-        owned_devices.forEach(yield function (item) {
+        console.log(owned_devices)
+        var promisesToExec = [];
+        owned_devices.forEach( function (item) {
             if (item['success']){
                 var adb_url = item['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
                 logStream.write("adb connect to: "+adb_url+ '\r\n')
-                var adbConnect = promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
-                // var adbConnect = yield promisedExecPuts("adb connect stf.ironsrc.com:7409");
+                // var adbConnect = promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
+                // var adbConnect = promisedExecPuts(adb_url);
+                promisesToExec.push(promisedExecPuts(adb_url));
                 logStream.write(adbConnect+ '\r\n'.toString())
-                sleep.sleep(10);
+                // sleep.sleep(10);
             }
         });
 
+        var promisesResults = yield promisesToExec;
+        logStream.write(promisesResults);
         // logStream.write("adb connect"+ '\r\n')
         // var adbConnect = yield promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
         // // var adbConnect = yield promisedExecPuts("adb connect stf.ironsrc.com:7409");
