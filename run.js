@@ -200,7 +200,7 @@ co (function *(){
             if (item['success']){
                 var adb_url = item['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
                 logStream.write("adb connect to: "+adb_url+ '\r\n')
-                var adbConnect = yield promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
+                var adbConnect = promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
                 // var adbConnect = yield promisedExecPuts("adb connect stf.ironsrc.com:7409");
                 logStream.write(adbConnect+ '\r\n'.toString())
                 sleep.sleep(10);
