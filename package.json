@@ -40,7 +40,6 @@
     "request-promise": "latest",
     "testem": "^1.13.0",
     "sleep": "latest",
-    "bluebird": "latest",
-    "co-sleep": "latest"
+    "bluebird": "latest"
   }
 }

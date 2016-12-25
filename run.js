@@ -7,10 +7,9 @@ var exec = require('child_process').exec;
 
 var request = require("request");
 var _ = require("lodash");
-// var sleep = require('sleep');
+var sleep = require('sleep');
 var co = require('co');
 var Promise = require("bluebird");
-var sleep = require('co-sleep');
 
 var fs = require('fs');
 var logStream = fs.createWriteStream('log.txt', {'flags': 'a'});
@@ -150,15 +149,13 @@ co (function *(){
         var removeAdbKeyOption = yield promisedExecRemoveAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");
         var removeAdbKeyRespond = yield promisedRequest(removeAdbKeyOption);
         logStream.write(removeAdbKeyRespond+ '\r\n'.toString())
-        // sleep.sleep(10);
-        // yield sleep(10000);
+        sleep.sleep(10);
 
         logStream.write("adb key"+ '\r\n')
         var addAdbKeyOption = yield promisedExecAddAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");
         var addAdbKeyRespond = yield promisedRequest(addAdbKeyOption);
         logStream.write(addAdbKeyRespond+ '\r\n'.toString())
-        // sleep.sleep(10);
-        // yield sleep(10000);
+        sleep.sleep(10);
 
         //Need to make Api requests to get available devices from STF
 
@@ -167,8 +164,7 @@ co (function *(){
         // var adbConnect = yield promisedExecPuts("adb connect stf.ironsrc.com:7409");
         logStream.write(adbConnect+ '\r\n'.toString())
 
-        // sleep.sleep(10)
-        // yield sleep(10000);
+        sleep.sleep(10)
         logStream.write("adb devices"+ '\r\n')
         var adbDevices = yield promisedExecPuts("adb devices");
         logStream.write(adbDevices+ '\r\n'.toString())
@@ -194,15 +190,13 @@ co (function *(){
         var adbOpenBrowser = yield promisedExecPuts("adb shell am start -a android.intent.action.VIEW -d " + new_ip);
         logStream.write(adbOpenBrowser+ '\r\n'.toString())
 
-        // sleep.sleep(5);
-        // yield sleep(5000);
+        sleep.sleep(5);
         logStream.write("Clear old adb key"+ '\r\n')
         removeAdbKeyOption = yield promisedExecRemoveAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");
         removeAdbKeyRespond = yield promisedRequest(removeAdbKeyOption);
         logStream.write(removeAdbKeyRespond+ '\r\n'.toString())
 
-        // sleep.sleep(20)
-        // yield sleep(20000);
+        sleep.sleep(20)
         process.on('uncaughtException', function (err) {
             logStream.write(err+ '\r\n'.toString());
         });
