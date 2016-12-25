@@ -203,6 +203,7 @@ co (function *(){
                 var adbConnect = yield promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
                 // var adbConnect = yield promisedExecPuts("adb connect stf.ironsrc.com:7409");
                 logStream.write(adbConnect+ '\r\n'.toString())
+                sleep.sleep(10);
             }
         });
 
