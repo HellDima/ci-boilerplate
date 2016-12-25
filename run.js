@@ -151,14 +151,14 @@ co (function *(){
         var removeAdbKeyRespond = yield promisedRequest(removeAdbKeyOption);
         logStream.write(removeAdbKeyRespond+ '\r\n'.toString())
         // sleep.sleep(10);
-        yield sleep(10000);
+        // yield sleep(10000);
 
         logStream.write("adb key"+ '\r\n')
         var addAdbKeyOption = yield promisedExecAddAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");
         var addAdbKeyRespond = yield promisedRequest(addAdbKeyOption);
         logStream.write(addAdbKeyRespond+ '\r\n'.toString())
         // sleep.sleep(10);
-        yield sleep(10000);
+        // yield sleep(10000);
 
         //Need to make Api requests to get available devices from STF
 
@@ -168,7 +168,7 @@ co (function *(){
         logStream.write(adbConnect+ '\r\n'.toString())
 
         // sleep.sleep(10)
-        yield sleep(10000);
+        // yield sleep(10000);
         logStream.write("adb devices"+ '\r\n')
         var adbDevices = yield promisedExecPuts("adb devices");
         logStream.write(adbDevices+ '\r\n'.toString())
@@ -195,14 +195,14 @@ co (function *(){
         logStream.write(adbOpenBrowser+ '\r\n'.toString())
 
         // sleep.sleep(5);
-        yield sleep(5000);
+        // yield sleep(5000);
         logStream.write("Clear old adb key"+ '\r\n')
         removeAdbKeyOption = yield promisedExecRemoveAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");
         removeAdbKeyRespond = yield promisedRequest(removeAdbKeyOption);
         logStream.write(removeAdbKeyRespond+ '\r\n'.toString())
 
         // sleep.sleep(20)
-        yield sleep(20000);
+        // yield sleep(20000);
         process.on('uncaughtException', function (err) {
             logStream.write(err+ '\r\n'.toString());
         });
@@ -210,9 +210,11 @@ co (function *(){
         logStream.end('this is the end line');
     }catch (err){
         logStream.write(err.stack+ '\r\n'.toString())
+        logStream.end('this is the end line');
     }
 
 }).catch(function(err) {
     logStream.write("catch error");
     logStream.write(err.stack);
+    logStream.end('this is the end line');
 });
