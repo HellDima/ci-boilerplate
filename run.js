@@ -12,10 +12,9 @@ var co = require('co');
 var Promise = require("bluebird");
 
 var fs = require('fs');
-var logStream = fs.createWriteStream('log.txt', {'flags': 'a'});
+var logStream = fs.createWriteStream('log.txt', {'flags': 'w'});
 // use {'flags': 'a'} to append and {'flags': 'w'} to erase and write a new file
 logStream.write('Initial line...'+ '\r\n');
-
 
 
 function promisedExec(cmd){
@@ -44,6 +43,29 @@ function promisedExecPuts(cmd){
 function promisedRequest(options){
     return new Promise(function(resolve, reject){
         request(options, function(err, res, body){
+            if (err) reject(err);
+            resolve(body)
+        })
+    })
+}
+
+function promisedRequestTakeOwner(devices, filter){
+
+    return new Promise(function(resolve, reject){
+        var options2 = { method: 'POST',
+            url: 'http://stf.ironsrc.com:5000/',
+            // url: 'http://rproxy-il.ironsrc.com:5000/',
+            headers:
+            { 'cache-control': 'no-cache',
+                'content-type': 'application/json' },
+            body:
+            { action: 'take_owner',
+                api_key: '035e04589902445583e2d5355b43eff0dc314dd99582445cbd5dd1038ce1e27f',
+                devices_required: devices,
+                filter: {"version":">4.1.1"} },
+            json: true };
+
+        request(options2, function(err, res, body){
             if (err) reject(err);
             resolve(body)
         })
@@ -122,10 +144,24 @@ function promisedExecRemoveAdb(cmd){
     })
 }
 
-logStream.write("run ngrok"+ '\r\n')
-// var runNgrok = yield promisedExec("./ngrok http 8888 &")
-exec("./ngrok http 8888 &", function (error, stdout, stderr) {
-})
+
+var argv = require('optimist').argv;
+// console.log(argv)
+var devices_required = 1
+var filter = ""
+
+if (argv.d)
+    devices_required = argv.d
+if (argv.f)
+    filter = argv.f
+
+logStream.write("Will run on "+ devices_required+" devices"+ '\r\n')
+logStream.write("Will run with filter: "+ filter+ '\r\n')
+
+// logStream.write("run ngrok"+ '\r\n')
+// // var runNgrok = yield promisedExec("./ngrok http 8888 &")
+// exec("./ngrok http 8888 &", function (error, stdout, stderr) {
+// })
 // logStream.write(runNgrok)
 
 co (function *(){
@@ -158,11 +194,22 @@ co (function *(){
         sleep.sleep(10);
 
         //Need to make Api requests to get available devices from STF
+        var owned_devices = yield promisedRequestTakeOwner(devices_required, filter)
+        // console.log(devices)
+        owned_devices.forEach(function (item) {
+            if (item['success']){
+                var adb_url = item['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
+                logStream.write("adb connect to: "+adb_url+ '\r\n')
+                var adbConnect = yield promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
+                // var adbConnect = yield promisedExecPuts("adb connect stf.ironsrc.com:7409");
+                logStream.write(adbConnect+ '\r\n'.toString())
+            }
+        });
 
-        logStream.write("adb connect"+ '\r\n')
-        var adbConnect = yield promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
-        // var adbConnect = yield promisedExecPuts("adb connect stf.ironsrc.com:7409");
-        logStream.write(adbConnect+ '\r\n'.toString())
+        // logStream.write("adb connect"+ '\r\n')
+        // var adbConnect = yield promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
+        // // var adbConnect = yield promisedExecPuts("adb connect stf.ironsrc.com:7409");
+        // logStream.write(adbConnect+ '\r\n'.toString())
 
         sleep.sleep(10)
         logStream.write("adb devices"+ '\r\n')
