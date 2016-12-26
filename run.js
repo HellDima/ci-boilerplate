@@ -162,7 +162,7 @@ logStream.write("run ngrok"+ '\r\n')
 // var runNgrok = yield promisedExec("./ngrok http 8888 &")
 exec("./ngrok http 8888 &", function (error, stdout, stderr) {
 })
-logStream.write(runNgrok)
+// logStream.write(runNgrok)
 
 co (function *(){
     try {
