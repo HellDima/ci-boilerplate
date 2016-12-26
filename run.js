@@ -185,6 +185,9 @@ exec("./ngrok http 8888 &", function (error, stdout, stderr) {
 })
 // console.log(runNgrok)
 
+var my_own_devices = []
+
+
 co (function *(){
     try {
         var myIp = yield promisedGetIp();
@@ -216,8 +219,13 @@ co (function *(){
 
         //Need to make Api requests to get available devices from STF
         var owned_devices = yield promisedRequestTakeOwner(devices_required, filter)
+        my_own_devices = owned_devices
         console.log(owned_devices[0]['adb_url'])
         console.log(owned_devices[1]['adb_url'])
+        my_own_devices.forEach(co(function* (item) {
+            console.log("foreach run item: "+ item['adb_url'])
+            var img = yield console.log(item);
+        }));
         // var promisesToExec = [];
         // owned_devices.forEach( function (item) {
         //     if (item['success']){
@@ -299,7 +307,7 @@ co (function *(){
         process.on('uncaughtException', function (err) {
             console.log(err+ '\r\n'.toString());
         });
-        process.exit(0)
+        // process.exit(0)
         logStream.end('this is the end line');
     }catch (err){
         console.log(err.stack+ '\r\n'.toString())
@@ -311,3 +319,8 @@ co (function *(){
     console.log(err.stack);
     logStream.end('this is the end line');
 });
+
+console.log("start second co")
+
+
+
