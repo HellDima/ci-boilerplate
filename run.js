@@ -220,9 +220,9 @@ co (function *(){
         console.log(adbConnect1+ '\r\n'.toString())
         sleep.sleep(5)
         adb_url = owned_devices[1]['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
-        console.log("adb connect "+adb_url+ '\r\n')
-        var adbConnect2 = yield promisedExecPuts("adb connect "+adb_url);
-        console.log(adbConnect2+ '\r\n'.toString())
+        // console.log("adb connect "+adb_url+ '\r\n')
+        // var adbConnect2 = yield promisedExecPuts("adb connect "+adb_url);
+        // console.log(adbConnect2+ '\r\n'.toString())
 
 
 
@@ -250,6 +250,19 @@ co (function *(){
         var new_ip = arrayFound[0].public_url
         // var new_ip = "http://www.walla.co.il"
         var adbOpenBrowser = yield promisedExecPuts("adb shell am start -a android.intent.action.VIEW -d " + new_ip);
+        console.log(adbOpenBrowser+ '\r\n'.toString())
+
+        sleep.sleep(5);
+        var disconnect = yield promisedExecPuts("adb disconnect")
+        console.log(disconnect)
+
+        sleep.sleep(5);
+        console.log("adb connect "+adb_url+ '\r\n')
+        var adbConnect2 = yield promisedExecPuts("adb connect "+adb_url);
+        console.log(adbConnect2+ '\r\n'.toString())
+
+        sleep.sleep(5);
+        adbOpenBrowser = yield promisedExecPuts("adb shell am start -a android.intent.action.VIEW -d " + new_ip);
         console.log(adbOpenBrowser+ '\r\n'.toString())
 
         sleep.sleep(5);
