@@ -50,7 +50,6 @@ function promisedRequest(options){
 }
 
 function promisedRequestTakeOwner(devices, filter){
-
     return new Promise(function(resolve, reject){
         var options2 = { method: 'POST',
             // url: 'http://stf.ironsrc.com:5000/',
@@ -71,6 +70,28 @@ function promisedRequestTakeOwner(devices, filter){
         })
     })
 }
+
+function promisedRequestReleaseOwner(){
+    return new Promise(function(resolve, reject){
+        var options2 = { method: 'POST',
+            // url: 'http://stf.ironsrc.com:5000/',
+            url: 'http://rproxy-il.ironsrc.com:5000/',
+            headers:
+            { 'cache-control': 'no-cache',
+                'content-type': 'application/json' },
+            body:
+            { action: 'release_owner',
+                api_key: '035e04589902445583e2d5355b43eff0dc314dd99582445cbd5dd1038ce1e27f',
+                all: 'true' },
+            json: true };
+
+        request(options2, function(err, res, body){
+            if (err) reject(err);
+            resolve(body)
+        })
+    })
+}
+
 
 function promisedGetIp(){
     return new Promise(function(resolve, reject){
@@ -272,6 +293,9 @@ co (function *(){
         console.log(removeAdbKeyRespond+ '\r\n'.toString())
 
         sleep.sleep(20)
+
+        var releaseown = yield promisedRequestReleaseOwner()
+        console.log(releaseown.toString())
         process.on('uncaughtException', function (err) {
             console.log(err+ '\r\n'.toString());
         });
