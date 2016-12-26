@@ -196,25 +196,31 @@ co (function *(){
         //Need to make Api requests to get available devices from STF
         var owned_devices = yield promisedRequestTakeOwner(devices_required, filter)
         console.log(owned_devices)
-        var promisesToExec = [];
-        owned_devices.forEach( function (item) {
-            if (item['success']){
-                var adb_url = item['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
-                logStream.write("adb connect to: "+adb_url+ '\r\n')
-                // var adbConnect = promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
-                // var adbConnect = promisedExecPuts(adb_url);
-                promisesToExec.push(promisedExecPuts("adb connect "+adb_url));
-                logStream.write(adb_url+ '\r\n'.toString())
-                sleep.sleep(10);
-            }
-        });
-
-        var promisesResults = yield promisesToExec;
-        logStream.write(promisesResults);
-        // logStream.write("adb connect"+ '\r\n')
+        // var promisesToExec = [];
+        // owned_devices.forEach( function (item) {
+        //     if (item['success']){
+        //         var adb_url = item['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
+        //         logStream.write("adb connect to: "+adb_url+ '\r\n')
+        //         // var adbConnect = promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
+        //         // var adbConnect = promisedExecPuts(adb_url);
+        //         promisesToExec.push(promisedExecPuts("adb connect "+adb_url));
+        //         logStream.write(adb_url+ '\r\n'.toString())
+        //         sleep.sleep(10);
+        //     }
+        // });
+        //
+        // var promisesResults = yield promisesToExec;
+        // logStream.write(promisesResults);
+        logStream.write("adb connect"+ '\r\n')
+        var adbConnect1 = yield promisedExecPuts("adb connect "+owned_devices[0]['adb_url']);
         // var adbConnect = yield promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
-        // // var adbConnect = yield promisedExecPuts("adb connect stf.ironsrc.com:7409");
-        // logStream.write(adbConnect+ '\r\n'.toString())
+        // var adbConnect = yield promisedExecPuts("adb connect stf.ironsrc.com:7409");
+        logStream.write(adbConnect1+ '\r\n'.toString())
+        sleep.sleep(5)
+        var adbConnect2 = yield promisedExecPuts("adb connect "+owned_devices[1]['adb_url']);
+        logStream.write(adbConnect2+ '\r\n'.toString())
+
+
 
         sleep.sleep(10)
         logStream.write("adb devices"+ '\r\n')
