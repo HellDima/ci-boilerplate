@@ -16,8 +16,8 @@ dependencies:
 
 test:
     override:
-#        - node run run.js
-        - npm run test-bs
+        - node run run.js -d 2
+#        - npm run test-bs
 
 general:
   artifacts:
