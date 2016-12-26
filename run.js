@@ -53,8 +53,8 @@ function promisedRequestTakeOwner(devices, filter){
 
     return new Promise(function(resolve, reject){
         var options2 = { method: 'POST',
-            url: 'http://stf.ironsrc.com:5000/',
-            // url: 'http://rproxy-il.ironsrc.com:5000/',
+            // url: 'http://stf.ironsrc.com:5000/',
+            url: 'http://rproxy-il.ironsrc.com:5000/',
             headers:
             { 'cache-control': 'no-cache',
                 'content-type': 'application/json' },
@@ -195,7 +195,8 @@ co (function *(){
 
         //Need to make Api requests to get available devices from STF
         var owned_devices = yield promisedRequestTakeOwner(devices_required, filter)
-        console.log(owned_devices)
+        console.log(owned_devices[0]['adb_url'])
+        console.log(owned_devices[1]['adb_url'])
         // var promisesToExec = [];
         // owned_devices.forEach( function (item) {
         //     if (item['success']){
@@ -211,14 +212,16 @@ co (function *(){
         //
         // var promisesResults = yield promisesToExec;
         // console.log(promisesResults);
-        console.log("adb connect "+owned_devices[0]['adb_url']+ '\r\n')
-        var adbConnect1 = yield promisedExecPuts("adb connect "+owned_devices[0]['adb_url']);
+        console.log("adb connect "+adb_url+ '\r\n')
+        var adb_url = owned_devices[0]['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
+        var adbConnect1 = yield promisedExecPuts("adb connect "+adb_url);
         // var adbConnect = yield promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
         // var adbConnect = yield promisedExecPuts("adb connect stf.ironsrc.com:7409");
         console.log(adbConnect1+ '\r\n'.toString())
         sleep.sleep(5)
-        console.log("adb connect "+owned_devices[1]['adb_url']+ '\r\n')
-        var adbConnect2 = yield promisedExecPuts("adb connect "+owned_devices[1]['adb_url']);
+        adb_url = owned_devices[1]['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
+        console.log("adb connect "+adb_url+ '\r\n')
+        var adbConnect2 = yield promisedExecPuts("adb connect "+adb_url);
         console.log(adbConnect2+ '\r\n'.toString())
 
 
