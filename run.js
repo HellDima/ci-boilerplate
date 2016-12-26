@@ -62,7 +62,7 @@ function promisedRequestTakeOwner(devices, filter){
             { action: 'take_owner',
                 api_key: '035e04589902445583e2d5355b43eff0dc314dd99582445cbd5dd1038ce1e27f',
                 devices_required: devices,
-                filter: {"version":">4.1.1"} },
+                filter: {"version":"=5.0.1"} },
             json: true };
 
         request(options2, function(err, res, body){
