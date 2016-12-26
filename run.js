@@ -14,7 +14,7 @@ var Promise = require("bluebird");
 var fs = require('fs');
 var logStream = fs.createWriteStream('log.txt', {'flags': 'a'});
 // use {'flags': 'a'} to append and {'flags': 'w'} to erase and write a new file
-logStream.write('Initial line...'+ '\r\n');
+console.log('Initial line...'+ '\r\n');
 
 
 function promisedExec(cmd){
@@ -91,7 +91,7 @@ function promisedExecAddAdb(cmd){
                 var rand = Math.floor(Math.random() * 100) + 1
                 var title = 'adb_key'+rand
                 key = key.trim()
-                logStream.write("key:"+key+":end"+ '\r\n');
+                console.log("key:"+key+":end"+ '\r\n');
                 var options = { method: 'POST',
                     url: 'http://rproxy-il.ironsrc.com:5000/',
                     // url: 'http://stf.ironsrc.com:5000/',
@@ -121,7 +121,7 @@ function promisedExecRemoveAdb(cmd){
             if (stdout){
                 var key = stdout.replace('(stdin)= ','')
                 key = key.trim()
-                logStream.write("key:"+key+":end"+ '\r\n');
+                console.log("key:"+key+":end"+ '\r\n');
                 var options = { method: 'POST',
                     url: 'http://rproxy-il.ironsrc.com:5000/',
                     // url: 'http://stf.ironsrc.com:5000/',
@@ -155,19 +155,19 @@ if (argv.d)
 if (argv.f)
     filter = argv.f
 
-logStream.write("Will run on "+ devices_required+" devices"+ '\r\n')
-logStream.write("Will run with filter: "+ filter+ '\r\n')
+console.log("Will run on "+ devices_required+" devices"+ '\r\n')
+console.log("Will run with filter: "+ filter+ '\r\n')
 
-logStream.write("run ngrok"+ '\r\n')
+console.log("run ngrok"+ '\r\n')
 // var runNgrok = yield promisedExec("./ngrok http 8888 &")
 exec("./ngrok http 8888 &", function (error, stdout, stderr) {
 })
-// logStream.write(runNgrok)
+// console.log(runNgrok)
 
 co (function *(){
     try {
         var myIp = yield promisedGetIp();
-        logStream.write('myip: ' + myIp+ '\r\n');
+        console.log('myip: ' + myIp+ '\r\n');
 
         var url = "http://prtgapi.ironsrc.com/add_to_rproxy?username=circleci&password=ABFyeJQw6HzappNQ&ip=" + myIp;
         var options = {
@@ -179,18 +179,18 @@ co (function *(){
             }
         };
         var daniel = yield promisedRequest(options);
-        logStream.write(daniel+ '\r\n');
+        console.log(daniel+ '\r\n');
 
-        logStream.write("Clear old adb key"+ '\r\n')
+        console.log("Clear old adb key"+ '\r\n')
         var removeAdbKeyOption = yield promisedExecRemoveAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");
         var removeAdbKeyRespond = yield promisedRequest(removeAdbKeyOption);
-        logStream.write(removeAdbKeyRespond+ '\r\n'.toString())
+        console.log(removeAdbKeyRespond+ '\r\n'.toString())
         sleep.sleep(10);
 
-        logStream.write("adb key"+ '\r\n')
+        console.log("adb key"+ '\r\n')
         var addAdbKeyOption = yield promisedExecAddAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");
         var addAdbKeyRespond = yield promisedRequest(addAdbKeyOption);
-        logStream.write(addAdbKeyRespond+ '\r\n'.toString())
+        console.log(addAdbKeyRespond+ '\r\n'.toString())
         sleep.sleep(10);
 
         //Need to make Api requests to get available devices from STF
@@ -200,41 +200,42 @@ co (function *(){
         // owned_devices.forEach( function (item) {
         //     if (item['success']){
         //         var adb_url = item['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
-        //         logStream.write("adb connect to: "+adb_url+ '\r\n')
+        //         console.log("adb connect to: "+adb_url+ '\r\n')
         //         // var adbConnect = promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
         //         // var adbConnect = promisedExecPuts(adb_url);
         //         promisesToExec.push(promisedExecPuts("adb connect "+adb_url));
-        //         logStream.write(adb_url+ '\r\n'.toString())
+        //         console.log(adb_url+ '\r\n'.toString())
         //         sleep.sleep(10);
         //     }
         // });
         //
         // var promisesResults = yield promisesToExec;
-        // logStream.write(promisesResults);
-        logStream.write("adb connect"+ '\r\n')
+        // console.log(promisesResults);
+        console.log("adb connect "+owned_devices[0]['adb_url']+ '\r\n')
         var adbConnect1 = yield promisedExecPuts("adb connect "+owned_devices[0]['adb_url']);
         // var adbConnect = yield promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
         // var adbConnect = yield promisedExecPuts("adb connect stf.ironsrc.com:7409");
-        logStream.write(adbConnect1+ '\r\n'.toString())
+        console.log(adbConnect1+ '\r\n'.toString())
         sleep.sleep(5)
+        console.log("adb connect "+owned_devices[1]['adb_url']+ '\r\n')
         var adbConnect2 = yield promisedExecPuts("adb connect "+owned_devices[1]['adb_url']);
-        logStream.write(adbConnect2+ '\r\n'.toString())
+        console.log(adbConnect2+ '\r\n'.toString())
 
 
 
         sleep.sleep(10)
-        logStream.write("adb devices"+ '\r\n')
+        console.log("adb devices"+ '\r\n')
         var adbDevices = yield promisedExecPuts("adb devices");
-        logStream.write(adbDevices+ '\r\n'.toString())
+        console.log(adbDevices+ '\r\n'.toString())
 
-        logStream.write("adb shell"+ '\r\n')
+        console.log("adb shell"+ '\r\n')
         var shell_options = {
             method: 'GET',
             url: 'http://127.0.0.1:4040/api/tunnels',
             headers: {'cache-control': 'no-cache'}
         };
         var shellRespond = yield promisedRequest(shell_options);
-        logStream.write(shellRespond+ '\r\n'.toString())
+        console.log(shellRespond+ '\r\n'.toString())
 
         var jsonObject = JSON.parse(shellRespond);
         var arrayFound = _.filter(jsonObject.tunnels, function (val) {
@@ -242,31 +243,31 @@ co (function *(){
                 return val;
             }
         });
-        logStream.write(arrayFound[0].public_url+ '\r\n'.toString());
+        console.log(arrayFound[0].public_url+ '\r\n'.toString());
         var new_ip = arrayFound[0].public_url
         // var new_ip = "http://www.walla.co.il"
         var adbOpenBrowser = yield promisedExecPuts("adb shell am start -a android.intent.action.VIEW -d " + new_ip);
-        logStream.write(adbOpenBrowser+ '\r\n'.toString())
+        console.log(adbOpenBrowser+ '\r\n'.toString())
 
         sleep.sleep(5);
-        logStream.write("Clear old adb key"+ '\r\n')
+        console.log("Clear old adb key"+ '\r\n')
         removeAdbKeyOption = yield promisedExecRemoveAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");
         removeAdbKeyRespond = yield promisedRequest(removeAdbKeyOption);
-        logStream.write(removeAdbKeyRespond+ '\r\n'.toString())
+        console.log(removeAdbKeyRespond+ '\r\n'.toString())
 
         sleep.sleep(20)
         process.on('uncaughtException', function (err) {
-            logStream.write(err+ '\r\n'.toString());
+            console.log(err+ '\r\n'.toString());
         });
         process.exit(0)
         logStream.end('this is the end line');
     }catch (err){
-        logStream.write(err.stack+ '\r\n'.toString())
+        console.log(err.stack+ '\r\n'.toString())
         logStream.end('this is the end line');
     }
 
 }).catch(function(err) {
-    logStream.write("catch error");
-    logStream.write(err.stack);
+    console.log("catch error");
+    console.log(err.stack);
     logStream.end('this is the end line');
 });
