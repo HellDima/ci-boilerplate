@@ -232,7 +232,6 @@ co (function *(){
 
         var owned_devices = yield promisedRequestTakeOwner(devices_required, filter)
         console.log(owned_devices)
-        process.exit(0)
 
         console.log("adb shell"+ '\r\n')
         var shell_options = {
