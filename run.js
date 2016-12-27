@@ -11,7 +11,6 @@ var sleep = require('sleep');
 var sleepCo = require('co-sleep');
 var co = require('co');
 var Promise = require("bluebird");
-var forEach2 = require('co-foreach');
 
 var fs = require('fs');
 var logStream = fs.createWriteStream('log.txt', {'flags': 'a'});

@@ -41,6 +41,7 @@
     "testem": "^1.13.0",
     "sleep": "latest",
     "bluebird": "latest",
-    "optimist": "latest"
+    "optimist": "latest",
+    "co-sleep": "latest"
   }
 }
