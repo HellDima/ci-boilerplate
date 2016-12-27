@@ -9,7 +9,7 @@
 
   "launchers": {
     "node": {
-      "command": "./run.js -d 2 -f \"version\":\"=5.0.1\"",
+      "command": "./run.js -d 2 -f version:=5.0.1",
       "protocol": "tap"
     }
   },
