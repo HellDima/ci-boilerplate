@@ -8,8 +8,10 @@ var exec = require('child_process').exec;
 var request = require("request");
 var _ = require("lodash");
 var sleep = require('sleep');
+var sleepCo = require('co-sleep');
 var co = require('co');
 var Promise = require("bluebird");
+var forEach2 = require('co-foreach');
 
 var fs = require('fs');
 var logStream = fs.createWriteStream('log.txt', {'flags': 'a'});
@@ -219,47 +221,38 @@ co (function *(){
 
         //Need to make Api requests to get available devices from STF
         var owned_devices = yield promisedRequestTakeOwner(devices_required, filter)
-        my_own_devices = owned_devices
-        console.log(owned_devices[0]['adb_url'])
-        console.log(owned_devices[1]['adb_url'])
-        my_own_devices.forEach(co(function* (item) {
-            console.log("foreach run item: "+ item['adb_url'])
-            var img = yield console.log(item);
-        }));
+        // my_own_devices = owned_devices
+        console.log(owned_devices)
+        // console.log(owned_devices[1]['adb_url'])
+        // owned_devices.forEach(co.wrap(function* (item) {
+        //     console.log("foreach run item: "+ item['adb_url'])
+        //     var img = yield console.log(item);
+        // }));
         // var promisesToExec = [];
-        // owned_devices.forEach( function (item) {
-        //     if (item['success']){
-        //         var adb_url = item['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
-        //         console.log("adb connect to: "+adb_url+ '\r\n')
-        //         // var adbConnect = promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
-        //         // var adbConnect = promisedExecPuts(adb_url);
-        //         promisesToExec.push(promisedExecPuts("adb connect "+adb_url));
-        //         console.log(adb_url+ '\r\n'.toString())
-        //         sleep.sleep(10);
-        //     }
-        // });
+
+        console.log("after")
         //
         // var promisesResults = yield promisesToExec;
         // console.log(promisesResults);
-        console.log("adb connect "+adb_url+ '\r\n')
-        var adb_url = owned_devices[0]['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
-        var adbConnect1 = yield promisedExecPuts("adb connect "+adb_url);
-        // var adbConnect = yield promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
-        // var adbConnect = yield promisedExecPuts("adb connect stf.ironsrc.com:7409");
-        console.log(adbConnect1+ '\r\n'.toString())
-        sleep.sleep(5)
-        adb_url = owned_devices[1]['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
+        // console.log("adb connect "+adb_url+ '\r\n')
+        // var adb_url = owned_devices[0]['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
+        // var adbConnect1 = yield promisedExecPuts("adb connect "+adb_url);
+        // // var adbConnect = yield promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
+        // // var adbConnect = yield promisedExecPuts("adb connect stf.ironsrc.com:7409");
+        // console.log(adbConnect1+ '\r\n'.toString())
+        // sleep.sleep(5)
+        // adb_url = owned_devices[1]['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
         // console.log("adb connect "+adb_url+ '\r\n')
         // var adbConnect2 = yield promisedExecPuts("adb connect "+adb_url);
         // console.log(adbConnect2+ '\r\n'.toString())
 
 
 
-        sleep.sleep(10)
-        console.log("adb devices"+ '\r\n')
-        var adbDevices = yield promisedExecPuts("adb devices");
-        console.log(adbDevices+ '\r\n'.toString())
-
+        // sleep.sleep(10)
+        // console.log("adb devices"+ '\r\n')
+        // var adbDevices = yield promisedExecPuts("adb devices");
+        // console.log(adbDevices+ '\r\n'.toString())
+        //
         console.log("adb shell"+ '\r\n')
         var shell_options = {
             method: 'GET',
@@ -278,21 +271,58 @@ co (function *(){
         console.log(arrayFound[0].public_url+ '\r\n'.toString());
         var new_ip = arrayFound[0].public_url
         // var new_ip = "http://www.walla.co.il"
-        var adbOpenBrowser = yield promisedExecPuts("adb shell am start -a android.intent.action.VIEW -d " + new_ip);
-        console.log(adbOpenBrowser+ '\r\n'.toString())
 
-        sleep.sleep(5);
         var disconnect = yield promisedExecPuts("adb disconnect")
         console.log(disconnect)
 
-        sleep.sleep(5);
-        console.log("adb connect "+adb_url+ '\r\n')
-        var adbConnect2 = yield promisedExecPuts("adb connect "+adb_url);
-        console.log(adbConnect2+ '\r\n'.toString())
+        yield Promise.each(owned_devices, co.wrap(function *(item) {
+            console.log("foreach run item: "+ item['adb_url'])
+            sleep.sleep(2)
+            if (item['success']){
+                console.log("success: "+ item['adb_url'])
+                var adb_url = item['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
+                console.log("adb connect1111")
+                var adbConnect = yield promisedExecPuts("adb connect "+adb_url);
+                console.log(adbConnect)
+                yield sleepCo(5000)
 
-        sleep.sleep(5);
-        adbOpenBrowser = yield promisedExecPuts("adb shell am start -a android.intent.action.VIEW -d " + new_ip);
-        console.log(adbOpenBrowser+ '\r\n'.toString())
+                var adbDevices = yield promisedExecPuts("adb devices");
+                console.log(adbDevices+ '\r\n'.toString())
+
+                // sleep.sleep(5);
+                yield sleepCo(5000)
+                console.log("adb shell")
+                var adbOpenBrowser = yield promisedExecPuts("adb shell am start -a android.intent.action.VIEW -d " + new_ip);
+                console.log(adbOpenBrowser+ '\r\n'.toString())
+                // sleep.sleep(5);
+                yield sleepCo(10000)
+                console.log("adb disconnect")
+                var disconnect = yield promisedExecPuts("adb disconnect")
+                console.log(disconnect)
+                // sleep.sleep(5);
+                yield sleepCo(5000)
+            }
+        }));
+        console.log("adb devices"+ '\r\n')
+        var adbDevices = yield promisedExecPuts("adb devices");
+        console.log(adbDevices+ '\r\n'.toString())
+
+        // var new_ip = "http://www.walla.co.il"
+        // var adbOpenBrowser = yield promisedExecPuts("adb shell am start -a android.intent.action.VIEW -d " + new_ip);
+        // console.log(adbOpenBrowser+ '\r\n'.toString())
+        //
+        // sleep.sleep(5);
+        // var disconnect = yield promisedExecPuts("adb disconnect")
+        // console.log(disconnect)
+        //
+        // sleep.sleep(5);
+        // console.log("adb connect "+adb_url+ '\r\n')
+        // var adbConnect2 = yield promisedExecPuts("adb connect "+adb_url);
+        // console.log(adbConnect2+ '\r\n'.toString())
+        //
+        // sleep.sleep(5);
+        // adbOpenBrowser = yield promisedExecPuts("adb shell am start -a android.intent.action.VIEW -d " + new_ip);
+        // console.log(adbOpenBrowser+ '\r\n'.toString())
 
         sleep.sleep(5);
         console.log("Clear old adb key"+ '\r\n')
