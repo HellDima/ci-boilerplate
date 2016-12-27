@@ -18,15 +18,6 @@ var logStream = fs.createWriteStream('log.txt', {'flags': 'a'});
 console.log('Initial line...'+ '\r\n');
 
 
-function promisedExec(cmd){
-    return new Promise(function(resolve, reject){
-        exec(cmd, function(error, stdout, stderr){
-            if (!error) resolve(cmd)
-            reject(error)
-        })
-    })
-}
-
 function promisedExecPuts(cmd){
     return new Promise(function(resolve, reject){
         exec(cmd, function(error, stdout, stderr){
@@ -52,18 +43,43 @@ function promisedRequest(options){
 
 function promisedRequestTakeOwner(devices, filter){
     return new Promise(function(resolve, reject){
-        var options2 = { method: 'POST',
-            // url: 'http://stf.ironsrc.com:5000/',
-            url: 'http://rproxy-il.ironsrc.com:5000/',
-            headers:
-            { 'cache-control': 'no-cache',
-                'content-type': 'application/json' },
-            body:
-            { action: 'take_owner',
-                api_key: '035e04589902445583e2d5355b43eff0dc314dd99582445cbd5dd1038ce1e27f',
-                devices_required: devices,
-                filter: {"version":"=5.0.1"} },
-            json: true };
+        var options2
+        var myFilter = {}
+        if (filter) {
+            myFilter[filter.split(":")[0]]=filter.split(":")[1]
+            options2 = {
+                method: 'POST',
+                // url: 'http://stf.ironsrc.com:5000/',
+                url: 'http://rproxy-il.ironsrc.com:5000/',
+                headers: {
+                    'cache-control': 'no-cache',
+                    'content-type': 'application/json'
+                },
+                body: {
+                    action: 'take_owner',
+                    api_key: '035e04589902445583e2d5355b43eff0dc314dd99582445cbd5dd1038ce1e27f',
+                    devices_required: devices,
+                    filter: myFilter
+                },
+                json: true
+            };
+        }else {
+            options2 = {
+                method: 'POST',
+                // url: 'http://stf.ironsrc.com:5000/',
+                url: 'http://rproxy-il.ironsrc.com:5000/',
+                headers: {
+                    'cache-control': 'no-cache',
+                    'content-type': 'application/json'
+                },
+                body: {
+                    action: 'take_owner',
+                    api_key: '035e04589902445583e2d5355b43eff0dc314dd99582445cbd5dd1038ce1e27f',
+                    devices_required: devices
+                },
+                json: true
+            };
+        }
 
         request(options2, function(err, res, body){
             if (err) reject(err);
@@ -168,7 +184,6 @@ function promisedExecRemoveAdb(cmd){
 
 
 var argv = require('optimist').argv;
-// console.log(argv)
 var devices_required = 1
 var filter = ""
 
@@ -181,12 +196,9 @@ console.log("Will run on "+ devices_required+" devices"+ '\r\n')
 console.log("Will run with filter: "+ filter+ '\r\n')
 
 console.log("run ngrok"+ '\r\n')
-// var runNgrok = yield promisedExec("./ngrok http 8888 &")
 exec("./ngrok http 8888 &", function (error, stdout, stderr) {
 })
-// console.log(runNgrok)
 
-var my_own_devices = []
 
 
 co (function *(){
@@ -218,40 +230,10 @@ co (function *(){
         console.log(addAdbKeyRespond+ '\r\n'.toString())
         sleep.sleep(10);
 
-        //Need to make Api requests to get available devices from STF
         var owned_devices = yield promisedRequestTakeOwner(devices_required, filter)
-        // my_own_devices = owned_devices
         console.log(owned_devices)
-        // console.log(owned_devices[1]['adb_url'])
-        // owned_devices.forEach(co.wrap(function* (item) {
-        //     console.log("foreach run item: "+ item['adb_url'])
-        //     var img = yield console.log(item);
-        // }));
-        // var promisesToExec = [];
+        process.exit(0)
 
-        console.log("after")
-        //
-        // var promisesResults = yield promisesToExec;
-        // console.log(promisesResults);
-        // console.log("adb connect "+adb_url+ '\r\n')
-        // var adb_url = owned_devices[0]['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
-        // var adbConnect1 = yield promisedExecPuts("adb connect "+adb_url);
-        // // var adbConnect = yield promisedExecPuts("adb connect rproxy-il.ironsrc.com:7425");
-        // // var adbConnect = yield promisedExecPuts("adb connect stf.ironsrc.com:7409");
-        // console.log(adbConnect1+ '\r\n'.toString())
-        // sleep.sleep(5)
-        // adb_url = owned_devices[1]['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
-        // console.log("adb connect "+adb_url+ '\r\n')
-        // var adbConnect2 = yield promisedExecPuts("adb connect "+adb_url);
-        // console.log(adbConnect2+ '\r\n'.toString())
-
-
-
-        // sleep.sleep(10)
-        // console.log("adb devices"+ '\r\n')
-        // var adbDevices = yield promisedExecPuts("adb devices");
-        // console.log(adbDevices+ '\r\n'.toString())
-        //
         console.log("adb shell"+ '\r\n')
         var shell_options = {
             method: 'GET',
@@ -305,23 +287,6 @@ co (function *(){
         console.log("adb devices"+ '\r\n')
         var adbDevices = yield promisedExecPuts("adb devices");
         console.log(adbDevices+ '\r\n'.toString())
-
-        // var new_ip = "http://www.walla.co.il"
-        // var adbOpenBrowser = yield promisedExecPuts("adb shell am start -a android.intent.action.VIEW -d " + new_ip);
-        // console.log(adbOpenBrowser+ '\r\n'.toString())
-        //
-        // sleep.sleep(5);
-        // var disconnect = yield promisedExecPuts("adb disconnect")
-        // console.log(disconnect)
-        //
-        // sleep.sleep(5);
-        // console.log("adb connect "+adb_url+ '\r\n')
-        // var adbConnect2 = yield promisedExecPuts("adb connect "+adb_url);
-        // console.log(adbConnect2+ '\r\n'.toString())
-        //
-        // sleep.sleep(5);
-        // adbOpenBrowser = yield promisedExecPuts("adb shell am start -a android.intent.action.VIEW -d " + new_ip);
-        // console.log(adbOpenBrowser+ '\r\n'.toString())
 
         sleep.sleep(5);
         console.log("Clear old adb key"+ '\r\n')
