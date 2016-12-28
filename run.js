@@ -196,8 +196,8 @@ logStream.write("Will run on "+ devices_required+" devices"+ '\r\n')
 logStream.write("Will run with filter: "+ filter+ '\r\n')
 
 logStream.write("run ngrok"+ '\r\n')
-// exec("./ngrok http 8888 &", function (error, stdout, stderr) {
-exec("./ngrok2 http 8888 &", function (error, stdout, stderr) {
+exec("./ngrok http 8888 &", function (error, stdout, stderr) {
+// exec("./ngrok2 http 8888 &", function (error, stdout, stderr) {
 })
 
 
