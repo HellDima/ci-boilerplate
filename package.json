@@ -38,7 +38,7 @@
     "lodash": "^4.17.2",
     "request": "^2.79.0",
     "request-promise": "latest",
-    "testem": "^1.13.0",
+    "testem": "1.13.0",
     "sleep": "latest",
     "bluebird": "latest",
     "optimist": "latest",
