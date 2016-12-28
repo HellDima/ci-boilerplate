@@ -12,7 +12,7 @@ dependencies:
     override:
         - npm prune
         - npm install
-        - npm update
+#        - npm update
 
 test:
     override:
