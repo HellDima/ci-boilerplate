@@ -4,7 +4,7 @@ machine:
 
 dependencies:
     pre:
-        - npm install testem -g
+#        - npm install testem -g
 #        - npm install external-ip -g
 #        - npm install request -g
         - unzip ngrok.zip
