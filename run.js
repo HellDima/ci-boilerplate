@@ -250,7 +250,7 @@ co (function *(){
             headers: {'cache-control': 'no-cache'}
         };
         var shellRespond = yield promisedRequest(shell_options);
-        logStream.write(shellRespond+ '\r\n'.toString())
+        console.log(shellRespond+ '\r\n'.toString())
 
         var jsonObject = JSON.parse(shellRespond);
         var arrayFound = _.filter(jsonObject.tunnels, function (val) {

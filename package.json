@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test-bs": "webpack -p && testem -f testem-mobile.json ci --port 8888",
+    "test-bs": "webpack -p && testem -f testem-stf.json ci --port 8888",
     "test-mobile": "node run.js",
     "test-local": "testem -f testem-local.json",
     "test-remote": "webpack -p && temstem ci -f testem-remote.json",
