@@ -300,6 +300,7 @@ co (function *(){
         process.on('uncaughtException', function (err) {
             console.log(err+ '\r\n'.toString());
         });
+        resolve(process.exit(0))
         process.exit(0)
         logStream.end('this is the end line');
     }catch (err){
@@ -313,7 +314,6 @@ co (function *(){
     logStream.end('this is the end line');
 });
 
-console.log("start second co")
 
 
 
