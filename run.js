@@ -57,7 +57,8 @@ function promisedRequestTakeOwner(devices, filter){
                 },
                 body: {
                     action: 'take_owner',
-                    api_key: 'd91c22237f234ec6ba0295e76476ce77bacd1ee11d3d4928a019b9c69f32cf16',
+                    // api_key: 'd91c22237f234ec6ba0295e76476ce77bacd1ee11d3d4928a019b9c69f32cf16',
+                    api_key: apiKey,
                     devices_required: devices,
                     filter: myFilter
                 },
@@ -74,7 +75,8 @@ function promisedRequestTakeOwner(devices, filter){
                 },
                 body: {
                     action: 'take_owner',
-                    api_key: 'd91c22237f234ec6ba0295e76476ce77bacd1ee11d3d4928a019b9c69f32cf16',
+                    // api_key: 'd91c22237f234ec6ba0295e76476ce77bacd1ee11d3d4928a019b9c69f32cf16',
+                    api_key: apiKey,
                     devices_required: devices
                 },
                 json: true
@@ -98,7 +100,8 @@ function promisedRequestReleaseOwner(){
                 'content-type': 'application/json' },
             body:
             { action: 'release_owner',
-                api_key: 'd91c22237f234ec6ba0295e76476ce77bacd1ee11d3d4928a019b9c69f32cf16',
+                // api_key: 'd91c22237f234ec6ba0295e76476ce77bacd1ee11d3d4928a019b9c69f32cf16',
+                api_key: apiKey,
                 all: 'true' },
             json: true };
 
@@ -138,7 +141,8 @@ function promisedExecAddAdb(cmd){
                         'content-type': 'application/json' },
                     body:
                     { action: 'add_adb_key',
-                        api_key: 'd91c22237f234ec6ba0295e76476ce77bacd1ee11d3d4928a019b9c69f32cf16',
+                        // api_key: 'd91c22237f234ec6ba0295e76476ce77bacd1ee11d3d4928a019b9c69f32cf16',
+                        api_key: apiKey,
                         title: title,
                         adb_key: key },
                     json: true };
@@ -168,7 +172,8 @@ function promisedExecRemoveAdb(cmd){
                         'content-type': 'application/json' },
                     body:
                     { action: 'remove_adb_key',
-                        api_key: 'd91c22237f234ec6ba0295e76476ce77bacd1ee11d3d4928a019b9c69f32cf16',
+                        // api_key: 'd91c22237f234ec6ba0295e76476ce77bacd1ee11d3d4928a019b9c69f32cf16',
+                        api_key: apiKey,
                         adb_key: key },
                     json: true };
 
@@ -186,14 +191,18 @@ function promisedExecRemoveAdb(cmd){
 var argv = require('optimist').argv;
 var devices_required = 1
 var filter = ""
+var apiKey = ""
 
 if (argv.d)
     devices_required = argv.d
 if (argv.f)
     filter = argv.f
+if (argv.k)
+    apiKey = argv.k
 
 logStream.write("Will run on "+ devices_required+" devices"+ '\r\n')
 logStream.write("Will run with filter: "+ filter+ '\r\n')
+logStream.write("Will run with apiKey: "+ apiKey+ '\r\n')
 
 logStream.write("run ngrok"+ '\r\n')
 exec("./ngrok http 8888 &", function (error, stdout, stderr) {
@@ -204,7 +213,6 @@ exec("./ngrok http 8888 &", function (error, stdout, stderr) {
 
 co (function *(){
     try {
-        // yield sleepCo(5000000000000)
         var myIp = yield promisedGetIp();
         logStream.write('myip: ' + myIp+ '\r\n');
 
@@ -217,8 +225,8 @@ co (function *(){
                 'content-type': 'application/json'
             }
         };
-        var daniel = yield promisedRequest(options);
-        logStream.write(daniel+ '\r\n');
+        var rproxy = yield promisedRequest(options);
+        logStream.write(rproxy+ '\r\n');
 
         logStream.write("Clear old adb key"+ '\r\n')
         var removeAdbKeyOption = yield promisedExecRemoveAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");

@@ -32,16 +32,14 @@
     "webpack-livereload-plugin": "^0.8.2"
   },
   "dependencies": {
-    "child-process-promise": "latest",
-    "co": "^4.6.0",
-    "external-ip": "latest",
-    "lodash": "^4.17.2",
-    "request": "^2.79.0",
-    "request-promise": "latest",
-    "testem": "1.13.0",
+    "request": "latest",
+    "lodash": "latest",
     "sleep": "latest",
+    "co-sleep": "latest",
+    "co": "latest",
     "bluebird": "latest",
+    "external-ip": "latest",
     "optimist": "latest",
-    "co-sleep": "latest"
+    "testem": "1.13.0"
   }
 }
