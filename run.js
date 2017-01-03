@@ -272,6 +272,7 @@ co (function *(){
                 console.log("success: "+ item['adb_url'])
                 var adb_url = item['adb_url'].replace("stf.ironsrc.com", "rproxy-il.ironsrc.com")
                 console.log("adb connect1111")
+                logStream.write(adb_url+ '\r\n'.toString())
                 var adbConnect = yield promisedExecPuts("adb connect "+adb_url);
                 logStream.write(adbConnect+ '\r\n'.toString())
                 yield sleepCo(5000)
