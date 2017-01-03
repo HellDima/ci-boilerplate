@@ -278,6 +278,7 @@ co (function *(){
 
                 var adbDevices = yield promisedExecPuts("adb devices");
                 logStream.write(adbDevices+ '\r\n'.toString())
+                yield sleepCo(5000)
 
                 var cleareProxy = yield promisedExecPuts("adb shell am start -n tk.elevenk.proxysetter/.MainActivity -e ssid 'MOBILE-STATIC' -e key 'phone!45' -e clear true");
                 logStream.write(cleareProxy+ '\r\n'.toString())
