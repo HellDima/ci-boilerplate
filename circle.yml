@@ -10,15 +10,14 @@ dependencies:
         - unzip ngrok.zip
 #        - ./ngrok http 8888 &
     override:
-#        - npm prune
-#        - npm install
+        - npm prune
+        - npm install
 #        - npm update
 
 test:
     override:
 #        - node run run.js -d 2 -f version:=5.0.1
-#        - npm run test-bs
-        - npm --help
+        - npm run test-bs
 
 general:
   artifacts:

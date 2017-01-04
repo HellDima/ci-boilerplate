@@ -281,9 +281,9 @@ co (function *(){
                 logStream.write(adbDevices+ '\r\n'.toString())
                 // yield sleepCo(5000)
                 //
-                // var cleareProxy = yield promisedExecPuts("adb shell am start -n tk.elevenk.proxysetter/.MainActivity -e ssid 'MOBILE-STATIC' -e key 'phone!45' -e clear true");
-                // logStream.write(cleareProxy+ '\r\n'.toString())
-                // yield sleepCo(5000)
+                var cleareProxy = yield promisedExecPuts("adb shell am start -n tk.elevenk.proxysetter/.MainActivity -e ssid 'MOBILE-STATIC' -e key 'phone!45' -e clear true");
+                logStream.write(cleareProxy+ '\r\n'.toString())
+                yield sleepCo(5000)
 
                 // sleep.sleep(5);
                 yield sleepCo(5000)
