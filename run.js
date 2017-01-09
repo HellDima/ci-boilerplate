@@ -316,7 +316,7 @@ co (function *(){
         process.on('uncaughtException', function (err) {
             logStream.write(err+ '\r\n'.toString());
         });
-        process.exit(0)
+        // process.exit(0)
         logStream.end('this is the end line');
     }catch (err){
         logStream.write(err.stack+ '\r\n'.toString())
