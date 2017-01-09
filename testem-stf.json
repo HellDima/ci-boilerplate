@@ -7,6 +7,8 @@
     "dist/test.bundle.js"
   ],
 
+  "on_exit": "./end.js",
+
   "launchers": {
     "node": {
       "command": "./run.js -d 1 -f version:=6.0.1 -k d91c22237f234ec6ba0295e76476ce77bacd1ee11d3d4928a019b9c69f32cf16",
