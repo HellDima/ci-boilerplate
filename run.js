@@ -299,24 +299,26 @@ co (function *(){
                 yield sleepCo(5000)
             }
         }));
-        // console.log("adb devices"+ '\r\n')
-        // var adbDevices = yield promisedExecPuts("adb devices");
-        // logStream.write(adbDevices+ '\r\n'.toString())
-        //
-        // sleep.sleep(5);
-        // logStream.write("Clear old adb key"+ '\r\n')
-        // removeAdbKeyOption = yield promisedExecRemoveAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");
-        // removeAdbKeyRespond = yield promisedRequest(removeAdbKeyOption);
-        // console.log(removeAdbKeyRespond+ '\r\n'.toString())
-        //
-        // sleep.sleep(20)
-        //
-        // var releaseown = yield promisedRequestReleaseOwner()
-        // logStream.write(releaseown+ '\r\n'.toString())
-        // process.on('uncaughtException', function (err) {
-        //     logStream.write(err+ '\r\n'.toString());
-        // });
-        // process.exit(0)
+
+        yield sleepCo(500000)
+        console.log("adb devices"+ '\r\n')
+        var adbDevices = yield promisedExecPuts("adb devices");
+        logStream.write(adbDevices+ '\r\n'.toString())
+
+        sleep.sleep(5);
+        logStream.write("Clear old adb key"+ '\r\n')
+        removeAdbKeyOption = yield promisedExecRemoveAdb("awk '{print $1}' < ~/.android/adbkey.pub | openssl base64 -A -d -a | openssl md5 -c");
+        removeAdbKeyRespond = yield promisedRequest(removeAdbKeyOption);
+        console.log(removeAdbKeyRespond+ '\r\n'.toString())
+
+        sleep.sleep(20)
+
+        var releaseown = yield promisedRequestReleaseOwner()
+        logStream.write(releaseown+ '\r\n'.toString())
+        process.on('uncaughtException', function (err) {
+            logStream.write(err+ '\r\n'.toString());
+        });
+        process.exit(0)
         logStream.end('this is the end line');
     }catch (err){
         logStream.write(err.stack+ '\r\n'.toString())
