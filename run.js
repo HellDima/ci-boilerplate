@@ -317,16 +317,19 @@ co (function *(){
             logStream.write(err+ '\r\n'.toString());
         });
         // process.exit(0)
+        return
         logStream.end('this is the end line');
     }catch (err){
         logStream.write(err.stack+ '\r\n'.toString())
         logStream.end('this is the end line');
+        process.exit(0)
     }
 
 }).catch(function(err) {
     logStream.write("catch error");
     logStream.write(err.stack);
     logStream.end('this is the end line');
+    process.exit(0)
 });
 
 
