@@ -300,7 +300,7 @@ co (function *(){
             }
         }));
 
-        yield sleepCo(500000)
+        yield sleepCo(550000)
         console.log("adb devices"+ '\r\n')
         var adbDevices = yield promisedExecPuts("adb devices");
         logStream.write(adbDevices+ '\r\n'.toString())
